@@ -23,7 +23,7 @@
     "highlight.js": "^11.11.1",
     "katex": "^0.16.22",
     "lucide-react": "^0.441.0",
-    "next": "15.2.6",
+    "next": "15.2.8",
     "openai": "^4.87.3",
     "openid-client": "^6.6.4",
     "partial-json": "^0.1.7",
@@ -45,7 +45,7 @@
     "@types/react-dom": "^18",
     "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^9.13.0",
-    "eslint-config-next": "15.2.6",
+    "eslint-config-next": "15.2.8",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.6.2"
