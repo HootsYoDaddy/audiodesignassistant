@@ -6,7 +6,34 @@ export async function POST(request: Request) {
   try {
     const { messages, toolsState } = await request.json();
 
-    const tools = await getTools(toolsState);
+    // CHANGED: make tools mutable so we can sanitize file_search vector_store_ids
+    let tools = await getTools(toolsState);
+
+    // CHANGED: sanitize tools so we never send null vector_store_ids (prevents 400 error)
+    const DEFAULT_VECTOR_STORE_ID = "vs_6993c1e2a5908191889331682f914090";
+
+    tools = (tools ?? [])
+      .map((t: any) => {
+        if (t?.type !== "file_search") return t;
+
+        const ids = Array.isArray(t.vector_store_ids)
+          ? t.vector_store_ids.filter(
+              (x: any) => typeof x === "string" && x.trim().length > 0
+            )
+          : [];
+
+        const finalIds = ids.length ? ids : [DEFAULT_VECTOR_STORE_ID];
+
+        return {
+          ...t,
+          vector_store_ids: finalIds,
+        };
+      })
+      .filter(
+        (t: any) =>
+          t?.type !== "file_search" ||
+          (Array.isArray(t.vector_store_ids) && t.vector_store_ids.length > 0)
+      );
 
     console.log("Tools:", tools);
 
